@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kemasan – Siki Coffee System</title>
+
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: #111;
+            padding: 18px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            color: gold;
+            border-bottom: 2px solid gold;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h2 {
+            color: gold;
+        }
+
+        .btn {
+            background: gold;
+            color: black;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background: white;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background: #111;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            color: gold;
+            border-bottom: 2px solid gold;
+        }
+
+        .back {
+            margin-top: 30px;
+            background: darkred;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back:hover {
+            background: red;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #222;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            padding-top: 80px;
+        }
+
+        .modal-content {
+            background: #111;
+            margin: auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            border: 2px solid gold;
+            border-radius: 10px;
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+            color: gold;
+            font-size: 22px;
+        }
+    </style>
+
+    <script>
+        const BASE_URL = "https://sikicoffee.rf.gd/api/kemasan";
+
+        // Cek Token Login
+        const token = localStorage.getItem("token");
+        if (!token) {
+            window.location.href = "index.html";
+        }
+
+        async function loadData() {
+            const response = await fetch(${BASE_URL}/get_stok.php);
+            const data = await response.json();
+
+            const tbody = document.getElementById("dataBody");
+            tbody.innerHTML = "";
+
+            data.data.forEach(item => {
+                const tr = `<tr>
+                    <td>${item.nama_kemasan}</td>
+                    <td>${item.jenis}</td>
+                    <td>${item.stok}</td>
+                    <td>${item.satuan}</td>
+                    <td>${item.created_at}</td>
+                </tr>`;
+                tbody.innerHTML += tr;
+            });
+        }
+
+        function openModal(type) {
+            document.getElementById("modalType").value = type;
+            document.getElementById("modal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        async function submitForm() {
+            const type = document.getElementById("modalType").value;
+            const nama = document.getElementById("nama").value;
+            const jenis = document.getElementById("jenis").value;
+            const qty = document.getElementById("qty").value;
+
+            if (!nama || !jenis || !qty) {
+                alert("Semua data wajib diisi.");
+                return;
+            }
+
+            let url = "";
+            if (type === "masuk") url = ${BASE_URL}/masuk.php;
+            if (type === "keluar") url = ${BASE_URL}/keluar.php;
+
+            const formData = new FormData();
+            formData.append("nama_kemasan", nama);
+            formData.append("jenis", jenis);
+            formData.append("qty", qty);
+
+            const send = await fetch(url, { method: "POST", body: formData });
+            const result = await send.json();
+
+            alert(result.message);
+            loadData();
+            closeModal();
+        }
+    </script>
+
+</head>
+
+<body onload="loadData()">
+
+    <div class="header">Kemasan • Siki Coffee</div>
+
+    <div class="container">
+        <h2>Data Stok Kemasan</h2>
+
+        <button class="btn" onclick="loadData()">Refresh Data</button>
+        <button class="btn" onclick="openModal('masuk')">Stok Masuk</button>
+        <button class="btn" onclick="openModal('keluar')">Stok Keluar</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama Kemasan</th>
+                    <th>Jenis</th>
+                    <th>Stok</th>
+                    <th>Satuan</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody id="dataBody"></tbody>
+        </table>
+
+        <button class="back" onclick="location.href='dashboard.html'">Kembali ke Dashboard</button>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+
+            <h2 style="color:gold;">Input Data Kemasan</h2>
+
+            <input type="hidden" id="modalType">
+            <input type="text" id="nama" placeholder="Nama Kemasan">
+            <input type="text" id="jenis" placeholder="Jenis Kemasan (misal: 100g, 250g)">
+            <input type="number" id="qty" placeholder="Jumlah">
+
+            <button class="btn" style="width:100%;" onclick="submitForm()">Simpan</button>
+        </div>
+    </div>
+
+</body>
+</html>
