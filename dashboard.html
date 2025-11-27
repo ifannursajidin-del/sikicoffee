@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siki Coffee System – Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+
+        .header {
+            background-color: #111;
+            padding: 20px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            color: gold;
+            letter-spacing: 1px;
+            border-bottom: 2px solid gold;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h2 {
+            color: gold;
+            margin-bottom: 10px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .menu-box {
+            background-color: #111;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid gold;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .menu-box:hover {
+            background-color: gold;
+            color: black;
+            border-color: white;
+        }
+
+        .logout {
+            margin-top: 35px;
+            padding: 12px 20px;
+            width: 100%;
+            background: darkred;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .logout:hover {
+            background-color: red;
+        }
+
+        .info {
+            margin-top: 35px;
+            font-size: 14px;
+            color: #aaa;
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        // Cek login token
+        const token = localStorage.getItem("token");
+        if (!token) {
+            window.location.href = "index.html";
+        }
+
+        function toPage(page) {
+            window.location.href = page;
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.href = "index.html";
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="header">
+        Siki Coffee System • Dashboard
+    </div>
+
+    <div class="container">
+
+        <h2>Menu Utama</h2>
+
+        <div class="menu-grid">
+            <div class="menu-box" onclick="toPage('produksi.html')">Produksi</div>
+            <div class="menu-box" onclick="toPage('bahan_baku.html')">Bahan Baku</div>
+            <div class="menu-box" onclick="toPage('gudang_barang.html')">Gudang Barang</div>
+            <div class="menu-box" onclick="toPage('kemasan.html')">Kemasan</div>
+        </div>
+
+        <button class="logout" onclick="logout()">Log Out</button>
+
+        <div class="info">
+            Sistem produksi & inventori Siki Coffee.<br>
+            Akses khusus untuk tim internal.
+        </div>
+    </div>
+
+</body>
+</html>
