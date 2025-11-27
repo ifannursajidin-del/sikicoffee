@@ -1,0 +1,59 @@
+/* Tema Hitam-Putih-Gold Elegan */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: black;
+    color: white;
+}
+
+/* Login Box */
+.login-box {
+    width: 90%;
+    max-width: 350px;
+    margin: 80px auto;
+    padding: 25px;
+    background: #111;
+    border: 1px solid gold;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.login-box h2 {
+    color: gold;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background: #222;
+    color: white;
+    font-size: 14px;
+}
+
+.btn {
+    width: 95%;
+    padding: 10px;
+    margin-top: 10px;
+    background: gold;
+    border: none;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #d1b000;
+}
+
+#login-status {
+    margin-top: 10px;
+    font-size: 14px;
+}
